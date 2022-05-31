@@ -31,9 +31,9 @@ export async function* fetchAll(
 ): AsyncGenerator<Question[]> {
   let page = 1;
   let hasMore = true;
-  while (hasMore && page <= 25) {
+  while (hasMore && page <= 25) { // Cap at 25 due to unauthenticated SO requests
     const result = await fetchOneBatch(fromDate, toDate, tags, pageSize, page);
-    await delay(1000);
+    await delay(1000); // throttle requests
     page += 1;
     hasMore = result.hasMore;
     yield result.questions;
