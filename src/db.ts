@@ -22,21 +22,23 @@ export async function initTables(client: Client): Promise<void> {
 export async function insert(
   client: Client,
   questions: Question[],
-): Promise<unknown> {
+): Promise<number> {
   if (questions.length === 0) {
-    return;
+    return 0;
   }
 
   const values: string = questions.map((q) =>
     `(${q.id}, '{${q.keywords}}', ${q.answered})`
   ).join(",");
 
-  return await client.queryObject(`
+  const { rowCount } = await client.queryObject(`
     INSERT INTO questions("id", "keywords", "answered")
     VALUES ${values}
     ON CONFLICT("id")
     DO UPDATE SET ("keywords", "answered") = (EXCLUDED.keywords, EXCLUDED.answered)
   `);
+
+  return rowCount!;
 }
 
 export async function getStats(

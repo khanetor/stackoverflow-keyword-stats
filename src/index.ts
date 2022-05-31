@@ -28,15 +28,16 @@ router.post("/load", async ({ request, response }: RouterContext<"/load">) => {
   const { from, to, tags } = await request.body({ type: "json" }).value;
   const fromDate = new Date(from as string);
   const toDate = new Date(to as string);
-  let totalQuestions = 0;
+  let totalFetched = 0;
+  let totalInserted = 0;
   for await (
     const questions of fetchAll(fromDate, toDate, tags as string[], 100)
   ) {
-    totalQuestions += questions.length
-    await insert(client, questions);
+    totalFetched += questions.length
+    totalInserted += await insert(client, questions);
   }
 
-  response.body = { totalQuestions };
+  response.body = { totalFetched, totalInserted };
 });
 
 router.get(
