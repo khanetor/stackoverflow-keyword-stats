@@ -1,0 +1,18 @@
+### Load data from SO
+
+POST http://localhost:8000/load
+Content-Type: application/json
+
+{
+    "from": "2020-06-01",
+    "to": "2020-12-31",
+    "tags": ["deno"]
+}
+
+### Get stats
+
+GET http://localhost:8000/stats/0
+
+### Debug
+
+GET https://api.stackexchange.com/2.3/questions?page=1&pagesize=100&fromdate=1651363200&todate=1653955200&order=desc&sort=activity&tagged=deno&site=stackoverflow

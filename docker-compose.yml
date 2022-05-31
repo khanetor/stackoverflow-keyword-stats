@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=veri
+      - POSTGRES_PASSWORD=veri
+      - POSTGRES_DB=veri
+  server:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_USER=veri
+      - POSTGRES_PASSWORD=veri
+      - POSTGRES_DB=veri
+      - POSTGRES_HOST=db
+    depends_on:
+      - db
